@@ -6,6 +6,9 @@
 
 #include "B+TREE.h"
 
+//need to implement _insert, _splitChild, _remove
+
+
 Node* root;  // Pointer to root node
 int t;       // Maximum degree
 
@@ -102,7 +105,9 @@ void _insert(Node* present, int k) {
     if (present->leaf) {
         //-------------------------------------------------------------------------------------------------------
         // Write your code.
+        // if the node is not full, just insert the key
 
+        // if the node is full, split the node and insert the key
         //-------------------------------------------------------------------------------------------------------
     } else  // If this node is not leaf
     {
