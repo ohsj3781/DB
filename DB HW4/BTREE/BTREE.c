@@ -5,14 +5,13 @@
 #include <math.h>
 
 #include "B+TREE.h"
-Node* root; // Pointer to root node
-int t;  // Maximum degree
+Node *root; // Pointer to root node
+int t;		// Maximum degree
 void BPLUSTreeInit(int _t)
 {
 	root = NULL;
 	t = _t;
 }
-
 
 void traverse()
 {
@@ -20,16 +19,14 @@ void traverse()
 		_traverse(root);
 }
 
-
-Node* search(int k)
+Node *search(int k)
 {
 	return (root == NULL) ? NULL : _search(root, k);
 }
 
-
-Node* _createNode(bool _leaf)
+Node *_createNode(bool _leaf)
 {
-	Node* newNode = (Node*)malloc(sizeof(Node));
+	Node *newNode = (Node *)malloc(sizeof(Node));
 	int i;
 
 	// Copy the given minimum degree and leaf property
@@ -37,8 +34,8 @@ Node* _createNode(bool _leaf)
 
 	// Allocate memory for maximum number of possible keys
 	// and child pointers
-	newNode->keys = (int*)malloc(sizeof(int) * t);
-	newNode->child = (Node**)malloc(sizeof(Node*) * (t + 1));
+	newNode->keys = (int *)malloc(sizeof(int) * t);
+	newNode->child = (Node **)malloc(sizeof(Node *) * (t + 1));
 	newNode->next = NULL;
 
 	// Initialize child
@@ -54,8 +51,7 @@ Node* _createNode(bool _leaf)
 	return newNode;
 }
 
-
-void _traverse(Node* present)
+void _traverse(Node *present)
 {
 	// There are n keys and n+1 children, travers through n keys and first n children
 	int i;
@@ -75,8 +71,7 @@ void _traverse(Node* present)
 		_traverse(present->child[i]);
 }
 
-
-Node* _search(Node* present, int k)
+Node *_search(Node *present, int k)
 {
 	// Find the first key greater than k
 	int i = 0;
@@ -95,7 +90,6 @@ Node* _search(Node* present, int k)
 	return _search(present->child[i], k);
 }
 
-
 void insertElement(int k)
 {
 	// Find key in this tree, and If there is a key, it prints error message.
@@ -111,15 +105,14 @@ void insertElement(int k)
 		// Allocate memory for root
 		root = _createNode(true);
 		root->parent = NULL; // Init parent
-		root->keys[0] = k;  // Insert key
-		root->n = 1;  // Update number of keys in root
+		root->keys[0] = k;	 // Insert key
+		root->n = 1;		 // Update number of keys in root
 	}
 	else // If tree is not empty
 		_insert(root, k);
 }
 
-
-void _insert(Node* present, int k)
+void _insert(Node *present, int k)
 {
 	// Initialize index as index of rightmost element
 	int i = present->n;
@@ -128,13 +121,13 @@ void _insert(Node* present, int k)
 	if (present->leaf)
 	{
 		//-------------------------------------------------------------------------------------------------------
-		//Write your code.
+		// Write your code.
 
 		int a = 0;
 
 		while (1)
 		{
-			if (a<i && k> present->keys[a])
+			if (a < i && k > present->keys[a])
 				a++;
 			else
 				break;
@@ -152,13 +145,13 @@ void _insert(Node* present, int k)
 	else // If this node is not leaf
 	{
 		//-------------------------------------------------------------------------------------------------------
-		//Write your code.
+		// Write your code.
 
 		int a = 0;
 
 		while (1)
 		{
-			if (a<i && k > present->keys[a])
+			if (a < i && k > present->keys[a])
 				a++;
 			else
 				break;
@@ -170,12 +163,11 @@ void _insert(Node* present, int k)
 	}
 }
 
-
-void _balancing(Node* present)
+void _balancing(Node *present)
 {
-	Node* parent;
+	Node *parent;
 
-	if (present->n <= t-1)
+	if (present->n <= t - 1)
 		return;
 	else if (present->parent == NULL)
 	{
@@ -189,16 +181,15 @@ void _balancing(Node* present)
 	}
 }
 
-
-Node* _splitChild(Node* present)
+Node *_splitChild(Node *present)
 {
 	int i;
 	int splitIdx;
 	int risingKey;
 	int parentIdx;
-	Node* currentParent;
-	Node* left;
-	Node* right = _createNode(present->leaf);
+	Node *currentParent;
+	Node *left;
+	Node *right = _createNode(present->leaf);
 
 	int offset;
 	if (present->leaf)
@@ -216,7 +207,8 @@ Node* _splitChild(Node* present)
 	{
 		currentParent = present->parent;
 
-		for (parentIdx = 0; parentIdx < currentParent->n + 1 && currentParent->child[parentIdx] != present; parentIdx++);
+		for (parentIdx = 0; parentIdx < currentParent->n + 1 && currentParent->child[parentIdx] != present; parentIdx++)
+			;
 
 		for (i = currentParent->n; i > parentIdx; i--)
 		{
@@ -230,7 +222,6 @@ Node* _splitChild(Node* present)
 		currentParent->child[parentIdx + 1] = right;
 		right->parent = currentParent;
 	}
-
 
 	for (i = splitIdx + offset; i < t + 1; i++)
 	{
@@ -272,7 +263,6 @@ Node* _splitChild(Node* present)
 	}
 }
 
-
 void removeElement(int k)
 {
 	if (!root)
@@ -288,7 +278,7 @@ void removeElement(int k)
 	//  if it has a child, otherwise set root as NULL
 	if (root->n == 0)
 	{
-		Node* tmp = root;
+		Node *tmp = root;
 		if (root->leaf)
 			root = NULL;
 		else
@@ -300,25 +290,27 @@ void removeElement(int k)
 		// Free the old root
 		free(tmp);
 	}
-	
+
 	return;
 }
 
-void _remove(Node* present, int k)
+void _remove(Node *present, int k)
 {
 	//-------------------------------------------------------------------------------------------------------
-	//Write your code.
+	// Write your code.
 
 	if (search(k) == NULL)
 	{
 		printf("error");
 		return;
 	}
-	else {
+	else
+	{
 		int a = 0;
 
 		int i;
-		for (i = 0; i < present->n && k > present->keys[i]; i++);
+		for (i = 0; i < present->n && k > present->keys[i]; i++)
+			;
 
 		if (i == present->n)
 		{
@@ -341,11 +333,12 @@ void _remove(Node* present, int k)
 			if (i == 0 && present->parent != NULL)
 			{
 				int smallest;
-				Node* parent = present->parent;
+				Node *parent = present->parent;
 				int parentIdx;
 
-				for (parentIdx = 0; parent->child[parentIdx] != present; parentIdx++);
-				
+				for (parentIdx = 0; parent->child[parentIdx] != present; parentIdx++)
+					;
+
 				if (present->n == 0)
 				{
 					if (parentIdx != parent->n)
@@ -361,8 +354,9 @@ void _remove(Node* present, int k)
 					if (parentIdx > 0 && parent->keys[parentIdx - 1] == k)
 						parent->keys[parentIdx - 1] = smallest;
 
-					Node* grandparent = parent->parent;
-					for (parentIdx = 0; grandparent != NULL && grandparent->child[parentIdx] != parent; parentIdx++);
+					Node *grandparent = parent->parent;
+					for (parentIdx = 0; grandparent != NULL && grandparent->child[parentIdx] != parent; parentIdx++)
+						;
 
 					parent = grandparent;
 				}
@@ -374,12 +368,12 @@ void _remove(Node* present, int k)
 	//-------------------------------------------------------------------------------------------------------
 }
 
-void _balancingAfterDel(Node* present) // repairAfterDelete
+void _balancingAfterDel(Node *present) // repairAfterDelete
 {
 	int minKeys = (int)floor(((double)t + 1) / 2) - 1;
 
-	Node* parent;
-	Node* next;
+	Node *parent;
+	Node *next;
 	int parentIdx = 0;
 
 	if (present->n < minKeys)
@@ -396,7 +390,8 @@ void _balancingAfterDel(Node* present) // repairAfterDelete
 		else
 		{
 			parent = present->parent;
-			for (parentIdx = 0; parent->child[parentIdx] != present; parentIdx++);
+			for (parentIdx = 0; parent->child[parentIdx] != present; parentIdx++)
+				;
 
 			if (parentIdx > 0 && parent->child[parentIdx - 1]->n > minKeys)
 				_borrowFromLeft(present, parentIdx);
@@ -418,13 +413,12 @@ void _balancingAfterDel(Node* present) // repairAfterDelete
 	}
 }
 
-
-void _borrowFromRight(Node* present, int parentIdx)  ////////////
+void _borrowFromRight(Node *present, int parentIdx) ////////////
 {
 	int i;
 
-	Node* rightSib;
-	Node* parent = present->parent;
+	Node *rightSib;
+	Node *parent = present->parent;
 
 	rightSib = parent->child[parentIdx + 1];
 	present->n++;
@@ -455,11 +449,10 @@ void _borrowFromRight(Node* present, int parentIdx)  ////////////
 	rightSib->n--;
 }
 
-
-void _borrowFromLeft(Node* present, int parentIdx) /////////
+void _borrowFromLeft(Node *present, int parentIdx) /////////
 {
-	Node* leftSib;
-	Node* parent = present->parent;
+	Node *leftSib;
+	Node *parent = present->parent;
 	present->n++;
 
 	for (int i = present->n - 1; i > 0; i--)
@@ -491,65 +484,42 @@ void _borrowFromLeft(Node* present, int parentIdx) /////////
 	leftSib->n--;
 }
 
-
-Node* _merge(Node* present)  //////
+Node *_merge(Node *present) //////
 {
-	Node* parent = present->parent;
+	Node *parent = present->parent;
 	int parentIdx = 0;
 	int fromParentIdx;
 	int minKeys = (int)floor(((double)t + 1) / 2) - 1;
 
-	for (parentIdx = 0; parent->child[parentIdx] != present; parentIdx++);
+	for (parentIdx = 0; parent->child[parentIdx] != present; parentIdx++)
+		;
 
-	Node* rightSib = parent->child[parentIdx + 1];
+	Node *rightSib = parent->child[parentIdx + 1];
 
 	if (!present->n)
 		present->keys[present->n] = parent->keys[parentIdx];
 
 	fromParentIdx = present->n;
 
-    int ttest = parent->n + present->n + rightSib->n;
-	if(!parent->parent && ttest == 2*minKeys ){
-		Node* rightsmin = parent->child[parentIdx+1];
-		while (!rightsmin){
+	int ttest = parent->n + present->n + rightSib->n;
+	if (!parent->parent && ttest == 2 * minKeys)
+	{
+		Node *rightsmin = parent->child[parentIdx + 1];
+		while (!rightsmin)
+		{
 			rightsmin = rightsmin->child[0];
 		}
 		present->keys[present->n] = rightsmin->parent->keys[0];
-		for (int i = 0; i < rightSib->n; i++){
+		for (int i = 0; i < rightSib->n; i++)
+		{
 			int insertIdx = present->n + 1 + i;
 
 			if (present->leaf)
 				insertIdx -= 1;
-		
+
 			present->keys[insertIdx] = rightSib->keys[i];
 		}
 
-		if (!present->leaf){
-			for (int i = 0; i <= rightSib->n; i++)
-			{
-				present->child[present->n + 1 + i] = rightSib->child[i];
-				present->child[present->n + 1 + i]->parent = present;
-			}
-			present->n = present->n + rightSib->n + 1;
-
-			
-		}
-		else{
-			present->n = present->n + rightSib->n;
-			present->next = rightSib->next;
-		}
-	}
-	else{
-		for (int i = 0; i < rightSib->n; i++){
-			int insertIdx = present->n + 1 + i;
-
-			if (present->leaf)
-				insertIdx -= 1;
-		
-			present->keys[insertIdx] = rightSib->keys[i];
-		}
-		
-		
 		if (!present->leaf)
 		{
 			for (int i = 0; i <= rightSib->n; i++)
@@ -558,8 +528,33 @@ Node* _merge(Node* present)  //////
 				present->child[present->n + 1 + i]->parent = present;
 			}
 			present->n = present->n + rightSib->n + 1;
+		}
+		else
+		{
+			present->n = present->n + rightSib->n;
+			present->next = rightSib->next;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < rightSib->n; i++)
+		{
+			int insertIdx = present->n + 1 + i;
 
-			
+			if (present->leaf)
+				insertIdx -= 1;
+
+			present->keys[insertIdx] = rightSib->keys[i];
+		}
+
+		if (!present->leaf)
+		{
+			for (int i = 0; i <= rightSib->n; i++)
+			{
+				present->child[present->n + 1 + i] = rightSib->child[i];
+				present->child[present->n + 1 + i]->parent = present;
+			}
+			present->n = present->n + rightSib->n + 1;
 		}
 		else
 		{
@@ -567,28 +562,25 @@ Node* _merge(Node* present)  //////
 			present->next = rightSib->next;
 		}
 
-
-		
 		for (int i = parentIdx + 1; i < parent->n; i++)
 		{
 			parent->child[i] = parent->child[i + 1];
 			parent->keys[i - 1] = parent->keys[i];
 		}
 	}
-	
-	parent->n--;
 
+	parent->n--;
 
 	return present;
 }
 
-
-int _getLevel(Node* present)
+int _getLevel(Node *present)
 {
 	int i;
 	int maxLevel = 0;
 	int temp;
-	if (present == NULL) return maxLevel;
+	if (present == NULL)
+		return maxLevel;
 	if (present->leaf == true)
 		return maxLevel + 1;
 
@@ -603,10 +595,11 @@ int _getLevel(Node* present)
 	return maxLevel + 1;
 }
 
-void _getNumberOfNodes(Node* present, int* numNodes, int level)
+void _getNumberOfNodes(Node *present, int *numNodes, int level)
 {
 	int i;
-	if (present == NULL) return;
+	if (present == NULL)
+		return;
 
 	if (present->leaf == false)
 	{
@@ -616,10 +609,11 @@ void _getNumberOfNodes(Node* present, int* numNodes, int level)
 	numNodes[level] += 1;
 }
 
-void _mappingNodes(Node* present, Node*** nodePtr, int* numNodes, int level)
+void _mappingNodes(Node *present, Node ***nodePtr, int *numNodes, int level)
 {
 	int i;
-	if (present == NULL) return;
+	if (present == NULL)
+		return;
 
 	if (present->leaf == false)
 	{
@@ -631,30 +625,32 @@ void _mappingNodes(Node* present, Node*** nodePtr, int* numNodes, int level)
 	numNodes[level] += 1;
 }
 
-
 void printTree()
 {
 	int level;
-	int* numNodes;
+	int *numNodes;
 	int i, j, k;
 
 	level = _getLevel(root);
-	numNodes = (int*)malloc(sizeof(int) * (level));
+	numNodes = (int *)malloc(sizeof(int) * (level));
 	memset(numNodes, 0, level * sizeof(int));
 
 	_getNumberOfNodes(root, numNodes, 0);
 
-	Node*** nodePtr;
-	nodePtr = (Node***)malloc(sizeof(Node**) * level);
-	for (i = 0; i < level; i++) {
-		nodePtr[i] = (Node**)malloc(sizeof(Node*) * numNodes[i]);
+	Node ***nodePtr;
+	nodePtr = (Node ***)malloc(sizeof(Node **) * level);
+	for (i = 0; i < level; i++)
+	{
+		nodePtr[i] = (Node **)malloc(sizeof(Node *) * numNodes[i]);
 	}
 
 	memset(numNodes, 0, level * sizeof(int));
 	_mappingNodes(root, nodePtr, numNodes, 0);
 
-	for (i = 0; i < level; i++) {
-		for (j = 0; j < numNodes[i]; j++) {
+	for (i = 0; i < level; i++)
+	{
+		for (j = 0; j < numNodes[i]; j++)
+		{
 			printf("[");
 
 			for (k = 0; k < nodePtr[i][j]->n; k++)
@@ -665,7 +661,8 @@ void printTree()
 		printf("\n");
 	}
 
-	for (i = 0; i < level; i++) {
+	for (i = 0; i < level; i++)
+	{
 		free(nodePtr[i]);
 	}
 	free(nodePtr);
